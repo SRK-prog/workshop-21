@@ -1,5 +1,5 @@
 const express = require("express");
-const User = require("./authModel");
+const Authuser = require("./authModel");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -23,7 +23,7 @@ app.post("/create-user", cors(), async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(req.body.password, salt);
-    const saveUser = new User({
+    const saveUser = new Authuser({
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
@@ -38,7 +38,7 @@ app.post("/create-user", cors(), async (req, res) => {
 
 app.post("/login-user", cors(), async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await Authuser.findOne({ email: req.body.email });
     if (user == null) {
       res.status(404).json("user not found");
     } else {
