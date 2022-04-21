@@ -43,6 +43,7 @@ const Signup = ({setToggle}) => {
       const res = await axios.post("http://localhost:5000/create-user", data);
       res.data && setToggle(false);
     } catch (err) {
+      console.log(err)
       setErrorMsg({
         status: true,
         message: "Something went wrong!",
@@ -56,10 +57,11 @@ const Signup = ({setToggle}) => {
           <button className="button-84" onClick={() => setToggle(false)}>
             Login
           </button>
-          <h2 style={{ textAlign: "center" }}>Register Page</h2>
+          <h2 className="text-center">Register Page</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="card-form">
             <div className="input">
               <TextField
+                autoFocus
                 type="text"
                 id="standard-basic"
                 label="Full Name"
@@ -109,7 +111,7 @@ const Signup = ({setToggle}) => {
                 error={!!errors.confirmpassword}
               />
             </div>
-            {errorMsg.bool && (
+            {errorMsg.status && (
               <div className="error-message">{errorMsg.message}</div>
             )}
             <div className="action"></div>

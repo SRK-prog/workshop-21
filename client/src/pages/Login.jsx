@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid Email").required("Email cannot be empty"),
-  password: yup.string().min(8, "Password cannot be less 8 character"),
+  password: yup.string().required("Password cannot be empty"),
 });
 
 const Login = ({ setToggle }) => {
@@ -28,6 +28,7 @@ const Login = ({ setToggle }) => {
     try {
       const res = await axios.post("http://localhost:5000/login-user", data);
       res.data && setSuccess({ sucbool: true, msg: "Login Successfully!" });
+      console.log(res.data);
     } catch (err) {
       setErrorMsg({
         status: true,
@@ -42,15 +43,15 @@ const Login = ({ setToggle }) => {
           <button className="button-84" onClick={() => setToggle(true)}>
             Register Page
           </button>
-          <h2 style={{ textAlign: "center" }}>Login Page</h2>
+          {!success.sucbool && (
+            <h2 className="text-center">Login Page</h2>
+          )}
           {success.sucbool && (
-            <div>
-              <div className="card-image">
-                <h2 className="card-heading">
-                  {success.msg}
-                  <small>Get started</small>
-                </h2>
-              </div>
+            <div className="card-image">
+              <h2 className="card-heading">
+                {success.msg}
+                <small>Get started</small>
+              </h2>
             </div>
           )}
 
@@ -59,6 +60,7 @@ const Login = ({ setToggle }) => {
               <div className="input">
                 <TextField
                   type="text"
+                  autoFocus
                   label="Email"
                   variant="standard"
                   {...register("email")}
@@ -86,9 +88,11 @@ const Login = ({ setToggle }) => {
               </div>
             </form>
           )}
-          <div className="card-info">
-            <p>By signing up you are agreeing to our terms and Conditions</p>
-          </div>
+          {!success.sucbool && (
+            <div className="card-info">
+              <p>By signing up you are agreeing to our terms and Conditions</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
